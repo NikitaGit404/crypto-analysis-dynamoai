@@ -16,28 +16,24 @@ const FilterTime: React.FC = () => {
   const [range, setRange] = React.useState<string>("6");
   const [showCustomDates, setShowCustomDates] = React.useState<boolean>(false);
 
-  useEffect(() => {
-    //fetch crypto data for custom dates
-    const updateHistoricalDataCustomDate = async (
-      start: string,
-      end: string
-    ) => {
-      try {
-        const tempData: any = {};
-        for (const currencyId of selectedCurrenciesId) {
-          const response = await getHistoricalDataTimeRange(
-            currencyId,
-            start,
-            end
-          );
-          tempData[currencyId] = response;
-        }
-        setStoredHistoricalData(tempData);
-      } catch (error) {
-        console.error("Error fetching historical data", error);
-        alert("Error fetching historical data");
+  //fetch crypto data for custom dates
+  const updateHistoricalDataCustomDate = async (start: string, end: string) => {
+    try {
+      const tempData: any = {};
+      for (const currencyId of selectedCurrenciesId) {
+        const response = await getHistoricalDataTimeRange(
+          currencyId,
+          start,
+          end
+        );
+        tempData[currencyId] = response;
       }
-    };
+      setStoredHistoricalData(tempData);
+    } catch (error) {
+      console.error("Error fetching historical data", error);
+    }
+  };
+  useEffect(() => {
     //fetch crypto data for past week, month or year
     const updateHistoricalData = async () => {
       const currencyIds = selectedCurrenciesId;
@@ -50,7 +46,6 @@ const FilterTime: React.FC = () => {
         setStoredHistoricalData(tempData);
       } catch (error) {
         console.error("Error fetching historical data", error);
-        alert("Error fetching historical data");
       }
     };
     if (showCustomDates) {
@@ -71,7 +66,7 @@ const FilterTime: React.FC = () => {
       setStartDate("");
       setEndDate("");
     }
-  }, [startDate, endDate, upToDays, selectedCurrenciesId, showCustomDates]);
+  }, [upToDays, selectedCurrenciesId, showCustomDates]);
 
   return (
     <>
@@ -120,6 +115,31 @@ const FilterTime: React.FC = () => {
                     setEndDate(e.target.value);
                   }}
                 />
+              </div>
+              <div>
+                <button
+                  className="bg-gray-50 border border-gray-800 rounded-lg px-4 py-1 hover:bg-gray-200 disabled:cursor-not-allowed"
+                  disabled={startDate === "" || endDate === ""}
+                  onClick={() => {
+                    if (startDate !== "" && endDate !== "") {
+                      const start = new Date(startDate).getTime() / 1000;
+                      const end = new Date(endDate).getTime() / 1000;
+                      if (start > end) {
+                        alert("Start date cannot be greater than end date");
+                        return;
+                      } else {
+                        updateHistoricalDataCustomDate(
+                          String(start),
+                          String(end)
+                        );
+                      }
+                    } else {
+                      alert("Please enter start date and end date");
+                    }
+                  }}
+                >
+                  Submit
+                </button>
               </div>
             </div>
           )}

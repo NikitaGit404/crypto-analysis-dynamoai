@@ -16,6 +16,7 @@ export const getSupportedCurrencies = async (): Promise<CoinsList[]> => {
         return response.data;
     } catch (error) {
         console.error("Error fetching cryptocoins", error);
+        alert(error);
         throw error;
     }
 };
@@ -40,6 +41,7 @@ export const getHistoricalData = async (coinId: string, upToDays: string) => {
         return response.data;
     } catch (error) {
         console.error("Error fetching historical data", error);
+        alert(error);
         throw error;
     }
 };
@@ -68,6 +70,7 @@ export const getHistoricalDataTimeRange = async (
         return response.data;
     } catch (error) {
         console.error("Error fetching historical data", error);
+        alert(error);
         throw error;
     }
 };

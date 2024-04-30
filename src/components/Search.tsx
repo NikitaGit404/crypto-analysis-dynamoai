@@ -24,7 +24,6 @@ const Search: React.FC = () => {
       setAllCurrencies(response);
     } catch (error) {
       console.error("Error fetching cryptocoins", error);
-      alert("Error fetching cryptocoins");
     }
   };
   useEffect(() => {
