@@ -10,6 +10,8 @@ type CurrenciesStore = {
     setStoredHistoricalData: (historicalData: StoredHistoricalData) => void;
     colorMap: { [key: string]: string };
     setColorMap: (colorMap: { [key: string]: string }) => void;
+    isLoading: boolean,
+    setIsLoading: (isLoading: boolean) => void;
 };
 
 export const useCurrenciesStore = create<CurrenciesStore>((set) => ({
@@ -23,4 +25,6 @@ export const useCurrenciesStore = create<CurrenciesStore>((set) => ({
         set({ storedHistoricalData }),
     colorMap: {},
     setColorMap: (colorMap) => set({ colorMap }),
+    isLoading: false,
+    setIsLoading: (isLoading)=> set({isLoading})
 }));

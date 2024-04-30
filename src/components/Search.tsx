@@ -9,6 +9,7 @@ const Search: React.FC = () => {
     setSelectedCurrenciesId,
     colorMap,
     setColorMap,
+    setIsLoading,
   } = useCurrenciesStore((state) => state);
 
   const [searchValue, setSearchValue] = React.useState<string>("");
@@ -20,10 +21,13 @@ const Search: React.FC = () => {
   //fetch all currencies when the component renders for the first time
   const getCurrencies = async () => {
     try {
+      setIsLoading(true);
       const response = await getSupportedCurrencies();
       setAllCurrencies(response);
     } catch (error) {
       console.error("Error fetching cryptocoins", error);
+    } finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -60,7 +64,7 @@ const Search: React.FC = () => {
       <div className="relative w-full">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
-            className="w-4 h-4 text-gray-500 dark:text-gray-400"
+            className="w-4 h-4 text-gray-500"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

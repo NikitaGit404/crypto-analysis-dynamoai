@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useCurrenciesStore } from "../store/currencyStore";
 import "chartjs-adapter-moment";
 import { Line } from "react-chartjs-2";
+import Loader from "./Loader";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,7 +27,7 @@ ChartJS.register(
 );
 
 const Chart: React.FC = () => {
-  const { selectedCurrenciesId, storedHistoricalData, colorMap } =
+  const { selectedCurrenciesId, storedHistoricalData, colorMap, isLoading } =
     useCurrenciesStore((state) => state);
   const [clickedDatasetIndex, setClickedDatasetIndex] =
     React.useState<number>(-1);
@@ -89,7 +90,11 @@ const Chart: React.FC = () => {
       {selectedCurrenciesId.length !== 0 && (
         <div className="w-full">
           <div className="w-full md:w-3/4 mx-auto ">
-            <Line data={data} options={options} ref={chartRef} />
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <Line data={data} options={options} ref={chartRef} />
+            )}
             {clickedDatasetIndex !== -1 && clickedDataIndex !== -1 && (
               <InfoModal
                 clickedDatasetIndex={clickedDatasetIndex}

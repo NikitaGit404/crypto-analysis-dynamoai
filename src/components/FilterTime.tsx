@@ -9,6 +9,7 @@ const FilterTime: React.FC = () => {
     setUpToDays,
     setStoredHistoricalData,
     selectedCurrenciesId,
+    setIsLoading,
   } = useCurrenciesStore((state) => state);
 
   const [startDate, setStartDate] = React.useState<string>("");
@@ -19,6 +20,7 @@ const FilterTime: React.FC = () => {
   //fetch crypto data for custom dates
   const updateHistoricalDataCustomDate = async (start: string, end: string) => {
     try {
+      setIsLoading(true);
       const tempData: any = {};
       for (const currencyId of selectedCurrenciesId) {
         const response = await getHistoricalDataTimeRange(
@@ -31,6 +33,8 @@ const FilterTime: React.FC = () => {
       setStoredHistoricalData(tempData);
     } catch (error) {
       console.error("Error fetching historical data", error);
+    } finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
